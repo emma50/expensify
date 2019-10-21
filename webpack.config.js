@@ -1,7 +1,8 @@
 const path = require("path")
 
 module.exports = {
-    entry: "./src/app.js",
+    // entry: "./src/app.js",
+    entry: path.join(__dirname, 'src/app.js'),
     output: {
         path: path.resolve(__dirname, "public/scripts"),
         filename: "bundle.js"
