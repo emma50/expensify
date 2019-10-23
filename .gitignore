@@ -3,4 +3,3 @@ node_modules/
 yarn.lock
 *.log
 jest.config.json
-babel.rc
