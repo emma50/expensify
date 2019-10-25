@@ -14,20 +14,6 @@ import "react-dates/lib/css/_datepicker.css"
 // Access store and it's props
 const store = configureStore()
 
-// store.subscribe(() => {
-//     const state = store.getState()
-//     const visibleExpenses = getVisibleExpenses(state.expenses, state.filters)
-//     console.log(visibleExpenses)
-// })
-
-store.dispatch(addExpense({ description: "Water bill", amount: 500}))
-store.dispatch(addExpense({ description: "Electricity bill", createdAt: 1000}))
-store.dispatch(addExpense({ description: "Rent", amount: 109500}))
-
-const state = store.getState()
-const visibleExpenses = getVisibleExpenses(state.expenses, state.filters)
-console.log(visibleExpenses)
-
 // Using the react-redux Provider Component All Components now have access to the store
 const jsx = (
     <Provider store={store}>   

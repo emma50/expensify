@@ -85,4 +85,3 @@ test("to handle date focus changes", () => {
 
     expect(wrapper.state("calenderFocused")).toBe(calenderFocused)
 })
-
