@@ -5,8 +5,7 @@
   "author": "Okwuidegbe Emmanuel",
   "license": "MIT",
   "scripts": {
-    "serve": "live-server public",
-    "build:dev": "webpack -d --env development",
+    "build:dev": "webpack",
     "build:prod": "webpack -p --env production",
     "dev-server": "webpack-dev-server",
     "test": "jest --config=jest.config.json --watch",
@@ -24,13 +23,8 @@
     "babel-loader": "^8.0.6",
     "babel-polyfill": "^6.26.0",
     "css-loader": "^3.2.0",
-    "enzyme": "^3.10.0",
-    "enzyme-adapter-react-16": "^1.15.1",
-    "enzyme-to-json": "^3.4.3",
     "express": "^4.17.1",
     "identity-obj-proxy": "^3.0.0",
-    "jest": "^24.9.0",
-    "live-server": "^1.2.1",
     "mini-css-extract-plugin": "^0.8.0",
     "moment": "^2.24.0",
     "node-sass": "^4.12.0",
@@ -43,14 +37,20 @@
     "react-modal": "^3.10.1",
     "react-redux": "^7.1.1",
     "react-router-dom": "^5.1.0",
-    "react-test-renderer": "^16.10.2",
     "redux": "^4.0.4",
     "sass-loader": "^8.0.0",
     "style-loader": "^1.0.0",
     "uuid": "^3.3.3",
     "validator": "^11.1.0",
     "webpack": "^4.40.2",
-    "webpack-cli": "^3.3.9",
+    "webpack-cli": "^3.3.9"
+  },
+  "devDependencies": {
+    "jest": "^24.9.0",
+    "enzyme": "^3.10.0",
+    "enzyme-adapter-react-16": "^1.15.1",
+    "enzyme-to-json": "^3.4.3",
+    "react-test-renderer": "^16.10.2",
     "webpack-dev-server": "^3.8.1"
   }
 }
