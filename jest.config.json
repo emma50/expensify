@@ -6,5 +6,5 @@
     "snapshotSerializers": ["enzyme-to-json/serializer"],
     "moduleNameMapper": {
         "\\.(css|sass)$": "identity-obj-proxy"
-      }
-}
+    }
+} 
