@@ -4,15 +4,15 @@ import toJson from 'enzyme-to-json'
 import expenses from "../fixtures/expenses"
 import { EditExpensePage } from "../../components/EditExpensePage"
 
-let editExpenseSpy, startRemoveExpenseSpy, historySpy, wrapper;
+let startEditExpenseSpy, startRemoveExpenseSpy, historySpy, wrapper;
 
 beforeEach(() => {
-    editExpenseSpy = jest.fn()
+    startEditExpenseSpy = jest.fn()
     startRemoveExpenseSpy = jest.fn()
     historySpy = { push: jest.fn() }
     wrapper = shallow(
         <EditExpensePage 
-            editExpense={editExpenseSpy} 
+            startEditExpense={startEditExpenseSpy} 
             startRemoveExpense={startRemoveExpenseSpy} 
             history={historySpy}
             expense={expenses[0]}
@@ -27,7 +27,7 @@ test("should render EditExpensePage correctly", () => {
 test("should handle editExpense", () => {
     wrapper.find("ExpenseForm").prop("onSubmit")(expenses[0])
     expect(historySpy.push).toHaveBeenLastCalledWith("/")
-    expect(editExpenseSpy).toHaveBeenLastCalledWith(expenses[0].id, expenses[0])
+    expect(startEditExpenseSpy).toHaveBeenLastCalledWith(expenses[0].id, expenses[0])
 })
 
 test("should handle startRemoveExpense", () => {

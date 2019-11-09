@@ -40,12 +40,23 @@ export const startRemoveExpense = ({ id } = {}) => {
     }
 }
 
-// Edit Expense
+// Edit Expense 
 const editExpense = (id, updates) => ({
     type: "EDIT_EXPENSE",
     id,
     updates
 })
+
+// startEditExpense dispatches editExpense
+export const startEditExpense = (id, updates) => {
+    return (dispatch) => {
+        // push updates to firebase database
+        return database.ref(`expenses/${id}`).update(updates).then(() => {
+            // Dispatch editExpense to the redux store --- gets internally called by redux
+            dispatch(editExpense(id, updates))
+        })
+    }
+}
 
 // Set Expenses --- get all Expenses
 export const setExpenses = (expenses) => ({
