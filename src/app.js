@@ -1,30 +1,55 @@
 import React from "react"
 import ReactDOM from "react-dom"
 import { Provider } from 'react-redux'
-import AppRouter from "./routers/AppRouter"
+import AppRouter, { history } from "./routers/AppRouter"
 import configureStore from "./store/configureStore"
 import { startSetExpenses } from "./actions/expenses"
-import { setTextFilter } from "./actions/filters"
+import { login, logout } from "./actions/auth"
 import getVisibleExpenses from "./selectors/expenses"
 import "normalize.css/normalize.css"
 import './styles/styles.scss'
 import 'react-dates/initialize'
 import "react-dates/lib/css/_datepicker.css"
-import "./firebase/firebase"
+import { firebase } from "./firebase/firebase"
 
-// Access store and it's props
+// Access redux-store and it's props
 const store = configureStore()
 
-// Using the react-redux Provider Component All Components now have access to the store
+// Using the react-redux Provider Component All Components now have access to the redux-store
 const jsx = (
     <Provider store={store}>   
         <AppRouter/>
     </Provider>
 )
 
+let hasRendered = false
+const renderApp = () => {
+    if (!hasRendered) {
+        ReactDOM.render(jsx, document.getElementById("app"))
+        hasRendered = true   
+    } 
+}
+
 ReactDOM.render(<p>Loading...</p>, document.getElementById("app"))
 
-store.dispatch(startSetExpenses()).then(() => {
-    return ReactDOM.render(jsx, document.getElementById("app"))
+// Switch between various pages as the user authenticates and logs out
+firebase.auth().onAuthStateChanged((user) => {     // Confirms if someone logged in or out
+    if (user) {
+        // console.log("uid:", user.uid)
+        store.dispatch(login(user.uid))    // Save user login to the redux-store
+        store.dispatch(startSetExpenses()).then(() => {
+           renderApp()
+           // Get the current location.
+           const location = history.location
+
+           if(location.pathname === "/") {
+                history.push("/dashboard")
+           }
+        })
+    } else {
+        store.dispatch(logout())    // Save user logout to the redux-store
+        renderApp()
+        history.push("/")
+    }
 })
 

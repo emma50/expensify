@@ -9,7 +9,7 @@ const firebaseConfig = {
     storageBucket: process.env.FIREBASE_STORAGE_BUCKET,
     messagingSenderId: process.env.FIREBASE_MESSAGING_SENDER_ID,
     appId: process.env.FIREBASE_APP_ID,
-    measurementId: "G-QB0WLJCVBN"
+    measurementId: process.env.FIREBASE_MEASUREMENT_ID
 }
 
 // Initialize Firebase
@@ -18,6 +18,8 @@ firebase.initializeApp(firebaseConfig)
 
 // Initialize Firebase database
 const database = firebase.database()
+// Setup firebase to authenticate with Google
+const googleAuthProvider =  new firebase.auth.GoogleAuthProvider()
 
-export { firebase, database as default }
+export { firebase, googleAuthProvider, database as default }
 

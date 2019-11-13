@@ -32,16 +32,16 @@ beforeEach((done) => {
 })
 
 describe("should setup actions object: addExpense, editExpense, removeExpense", () => {
-    test("should setup remove expense action object", () => {
+    test("should setup removeExpense action object", () => {
         const action = removeExpense({id: "123abc"})
 
         expect(action).toEqual({
             type: "REMOVE_EXPENSE",
             id: "123abc"
         })
-    })
+    }, 30000)
 
-    test("should remove expense from firebase", (done) => {
+    test("should removeExpense from firebase", (done) => {
         const store = mockStore({}) 
         const id = expenses[1].id
         store.dispatch(startRemoveExpense({ id })).then(() => {
@@ -58,7 +58,7 @@ describe("should setup actions object: addExpense, editExpense, removeExpense", 
         })
     })
 
-    test("should setup edit expense action object", () => {
+    test("should setup editExpense action object", () => {
         const action = editExpense("123abc", { note: "New note value" })
 
         expect(action).toEqual({
@@ -70,7 +70,7 @@ describe("should setup actions object: addExpense, editExpense, removeExpense", 
         })
     })
 
-    test("should edit expense in firebase database", (done) => {
+    test("should editExpense in firebase database", (done) => {
         const store = mockStore({}) 
         const id = expenses[0].id
         const updates = { amount: 234561 }
@@ -92,7 +92,7 @@ describe("should setup actions object: addExpense, editExpense, removeExpense", 
         })
     })
 
-    test("should setup add expense action object with provided values", () => {
+    test("should setup addExpense action object with provided values", () => {
         const action = addExpense(expenses[2])
 
         expect(action).toEqual({
@@ -101,7 +101,7 @@ describe("should setup actions object: addExpense, editExpense, removeExpense", 
         })
     })
 
-    test("should add expense to database and store", (done) => {
+    test("should addExpense to database and store", (done) => {
         const store = mockStore({}) 
         const expenseData = {
             description: "Mobile phone",
@@ -129,7 +129,7 @@ describe("should setup actions object: addExpense, editExpense, removeExpense", 
         })
     })
 
-    test("should add expense with default to database and store", (done) => {
+    test("should addExpense with default to database and store", (done) => {
         const store = mockStore({}) 
         const expenseDefaultData = {
             description: "",
