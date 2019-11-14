@@ -9,11 +9,12 @@ const addExpense = (expense) => ({
 
 // startAddExpense dispatches addExpense
 export const startAddExpense = (expenseData = {}) => {
-    return (dispatch) => {
+    return (dispatch, getState) => {
+        const uid = getState().auth.uid
         const { description, note, amount, createdAt } = expenseData
         const expense = { description, note, amount, createdAt }
         // push expense to firebase database
-        return database.ref("expenses").push(expense).then((ref) => {
+        return database.ref(`users/${uid}/expenses`).push(expense).then((ref) => {
             // Dispatch addExpense to the redux store --- gets internally called by redux
             dispatch(addExpense({
                 id: ref.key,
@@ -31,9 +32,10 @@ const removeExpense = ({ id } = {}) => ({
 
 // startRemoveExpense dispatches removeExpense
 export const startRemoveExpense = ({ id } = {}) => {
-    return (dispatch) => {
+    return (dispatch, getState) => {
+        const uid = getState().auth.uid
         // remove expense from firebase database
-        return database.ref(`expenses/${id}`).remove().then(() => {
+        return database.ref(`users/${uid}/expenses/${id}`).remove().then(() => {
             // Dispatch removeExpenses to the redux store --- get internally called by redux
             dispatch(removeExpense({ id }))
         })
@@ -49,9 +51,10 @@ const editExpense = (id, updates) => ({
 
 // startEditExpense dispatches editExpense
 export const startEditExpense = (id, updates) => {
-    return (dispatch) => {
+    return (dispatch, getState) => {
+        const uid = getState().auth.uid
         // push updates to firebase database
-        return database.ref(`expenses/${id}`).update(updates).then(() => {
+        return database.ref(`users/${uid}/expenses/${id}`).update(updates).then(() => {
             // Dispatch editExpense to the redux store --- gets internally called by redux
             dispatch(editExpense(id, updates))
         })
@@ -64,11 +67,12 @@ export const setExpenses = (expenses) => ({
     expenses
 })
 
-// startSetExpense dispatches setExpense
+// startSetExpense dispatches setExpense --- get expenses
 export const startSetExpenses = () => {
-    return (dispatch) => {
+    return (dispatch, getState) => {
+        const uid = getState().auth.uid
         // get expenses from firebase database
-        return database.ref("expenses").once("value").then((dataSnapshot) => {
+        return database.ref(`users/${uid}/expenses`).once("value").then((dataSnapshot) => {
             const expenses = []
             
             dataSnapshot.forEach((childDataSnapshot) => {

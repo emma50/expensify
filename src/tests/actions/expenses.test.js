@@ -13,8 +13,11 @@ import {
 import expenses from "../fixtures/expenses"
 import database from "../../firebase/firebase"
 
-const middlewares = [thunk] // add your middlewares like `redux-thunk`
+const middlewares = [thunk] // add a middlewares 
 const mockStore = configureStore(middlewares)
+
+const uid = "weekci3389fjkfj"
+const defaultAuthState =  { auth: { uid } }
 
 beforeEach((done) => {
     // set some data in the database to be tested
@@ -28,7 +31,7 @@ beforeEach((done) => {
         }
     })
 
-    database.ref("expenses").set(expenseData).then(() => done())  
+    database.ref(`users/${uid}/expenses`).set(expenseData).then(() => done())  
 })
 
 describe("should setup actions object: addExpense, editExpense, removeExpense", () => {
@@ -42,7 +45,7 @@ describe("should setup actions object: addExpense, editExpense, removeExpense", 
     }, 30000)
 
     test("should removeExpense from firebase", (done) => {
-        const store = mockStore({}) 
+        const store = mockStore(defaultAuthState) 
         const id = expenses[1].id
         store.dispatch(startRemoveExpense({ id })).then(() => {
             const actions = store.getActions()
@@ -50,7 +53,7 @@ describe("should setup actions object: addExpense, editExpense, removeExpense", 
                 type: "REMOVE_EXPENSE",
                 id
             })
-            return database.ref(`expenses/${id}`).once("value")
+            return database.ref(`users/${uid}/expenses/${id}`).once("value")
         }).then((dataSnapshot) => {
             const emptyData = dataSnapshot.val()
             expect(emptyData).toBeFalsy()
@@ -71,7 +74,7 @@ describe("should setup actions object: addExpense, editExpense, removeExpense", 
     })
 
     test("should editExpense in firebase database", (done) => {
-        const store = mockStore({}) 
+        const store = mockStore(defaultAuthState) 
         const id = expenses[0].id
         const updates = { amount: 234561 }
 
@@ -84,7 +87,7 @@ describe("should setup actions object: addExpense, editExpense, removeExpense", 
             })
 
             // Check if value is the same in firebase database
-            return database.ref(`expenses/${id}`).once("value")
+            return database.ref(`users/${uid}/expenses/${id}`).once("value")
         }).then((dataSnapshot) => {
             const data = dataSnapshot.val()
             expect(data.amount).toEqual(updates.amount)
@@ -102,7 +105,7 @@ describe("should setup actions object: addExpense, editExpense, removeExpense", 
     })
 
     test("should addExpense to database and store", (done) => {
-        const store = mockStore({}) 
+        const store = mockStore(defaultAuthState) 
         const expenseData = {
             description: "Mobile phone",
             amount: 1000,
@@ -121,7 +124,7 @@ describe("should setup actions object: addExpense, editExpense, removeExpense", 
             })
 
             // Check if value is the same in firebase database
-            return database.ref(`expenses/${actions[0].expense.id}`).once("value")
+            return database.ref(`users/${uid}/expenses/${actions[0].expense.id}`).once("value")
         }).then((dataSnapshot) => {
             const data = dataSnapshot.val()
             expect(data).toEqual(expenseData)
@@ -130,7 +133,7 @@ describe("should setup actions object: addExpense, editExpense, removeExpense", 
     })
 
     test("should addExpense with default to database and store", (done) => {
-        const store = mockStore({}) 
+        const store = mockStore(defaultAuthState) 
         const expenseDefaultData = {
             description: "",
             amount: 0,
@@ -149,7 +152,7 @@ describe("should setup actions object: addExpense, editExpense, removeExpense", 
             })
 
             // Check if value is the same in firebase database
-            return database.ref(`expenses/${actions[0].expense.id}`).once("value")
+            return database.ref(`users/${uid}/expenses/${actions[0].expense.id}`).once("value")
         }).then((dataSnapshot) => {
             const data = dataSnapshot.val()
             expect(data).toEqual(expenseDefaultData)
@@ -166,7 +169,7 @@ describe("should setup actions object: addExpense, editExpense, removeExpense", 
     })
 
     test("should fetch expenses from firebase", (done) => {
-        const store = mockStore({}) 
+        const store = mockStore(defaultAuthState) 
         store.dispatch(startSetExpenses()).then(() => {
             const actions = store.getActions()
             expect(actions[0]).toEqual({
