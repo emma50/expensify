@@ -11,11 +11,12 @@ import './styles/styles.scss'
 import 'react-dates/initialize'
 import "react-dates/lib/css/_datepicker.css"
 import { firebase } from "./firebase/firebase"
+import LoadingPage from "./components/LoadingPage"
 
-// Access redux-store and it's props
+// The redux-store --- stores React state
 const store = configureStore()
 
-// Using the react-redux Provider Component All Components now have access to the redux-store
+// Using the react-redux Provider Component, All React Components now have access to the redux-store
 const jsx = (
     <Provider store={store}>   
         <AppRouter/>
@@ -30,7 +31,7 @@ const renderApp = () => {
     } 
 }
 
-ReactDOM.render(<p>Loading...</p>, document.getElementById("app"))
+ReactDOM.render(<LoadingPage/>, document.getElementById("app"))
 
 // Switch between various pages as the user authenticates and logs out
 firebase.auth().onAuthStateChanged((user) => {     // Confirms if someone logged in or out
